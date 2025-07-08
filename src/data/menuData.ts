@@ -25,6 +25,7 @@ export const menuData: MenuCategory[] = [
         description: "Steak, cheddar",
         price: 8.00,
         category: "hamburgers",
+        image: "/src/assets/cheese-burger.jpg",
         isPopular: true
       },
       {
@@ -32,21 +33,24 @@ export const menuData: MenuCategory[] = [
         name: "FISH",
         description: "Fish, cheddar, sauce fish",
         price: 8.00,
-        category: "hamburgers"
+        category: "hamburgers",
+        image: "/src/assets/fish-burger.jpg"
       },
       {
         id: "burger-cheval",
         name: "BURGER CHEVAL",
         description: "Steak, œuf, cheddar",
         price: 9.00,
-        category: "hamburgers"
+        category: "hamburgers",
+        image: "/src/assets/burger-cheval.jpg"
       },
       {
         id: "chicken-burger",
         name: "CHICKEN BURGER",
         description: "Chicken, cheddar",
         price: 8.50,
-        category: "hamburgers"
+        category: "hamburgers",
+        image: "/src/assets/chicken-burger.jpg"
       },
       {
         id: "mexicain",
@@ -102,7 +106,8 @@ export const menuData: MenuCategory[] = [
         name: "DONER KEBAB",
         description: "Pain maison, baguette ou galette",
         price: 7.50,
-        category: "sandwiches"
+        category: "sandwiches",
+        image: "/src/assets/doner-kebab.jpg"
       },
       {
         id: "steak-hache",
@@ -172,7 +177,8 @@ export const menuData: MenuCategory[] = [
         name: "Classic - 1 viande au choix",
         description: "",
         price: 9.00,
-        category: "tacos"
+        category: "tacos",
+        image: "/src/assets/tacos.jpg"
       },
       {
         id: "tacos-double",
@@ -199,7 +205,8 @@ export const menuData: MenuCategory[] = [
         name: "4 FROMAGES",
         description: "Mozza, chèvre, emmental, cheddar",
         price: 6.00,
-        category: "paninis"
+        category: "paninis",
+        image: "/src/assets/panini.jpg"
       },
       {
         id: "panini-poulet",
@@ -315,7 +322,8 @@ export const menuData: MenuCategory[] = [
         name: "Frites Cheddar",
         description: "",
         price: 4.00,
-        category: "sides"
+        category: "sides",
+        image: "/src/assets/frites-cheddar.jpg"
       },
       {
         id: "frites-cheddar-bacon",
