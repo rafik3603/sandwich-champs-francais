@@ -14,7 +14,205 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      menu_items: {
+        Row: {
+          allergens: string[] | null
+          available: boolean
+          category: string
+          created_at: string
+          description: string | null
+          description_ar: string | null
+          id: string
+          image_url: string | null
+          ingredients: string[] | null
+          name: string
+          name_ar: string
+          nutritional_info: Json | null
+          preparation_time: number | null
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          allergens?: string[] | null
+          available?: boolean
+          category: string
+          created_at?: string
+          description?: string | null
+          description_ar?: string | null
+          id?: string
+          image_url?: string | null
+          ingredients?: string[] | null
+          name: string
+          name_ar: string
+          nutritional_info?: Json | null
+          preparation_time?: number | null
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          allergens?: string[] | null
+          available?: boolean
+          category?: string
+          created_at?: string
+          description?: string | null
+          description_ar?: string | null
+          id?: string
+          image_url?: string | null
+          ingredients?: string[] | null
+          name?: string
+          name_ar?: string
+          nutritional_info?: Json | null
+          preparation_time?: number | null
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notifications: {
+        Row: {
+          action_required: boolean
+          created_at: string
+          id: string
+          message: string
+          message_ar: string | null
+          metadata: Json | null
+          read: boolean
+          title: string
+          title_ar: string | null
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          action_required?: boolean
+          created_at?: string
+          id?: string
+          message: string
+          message_ar?: string | null
+          metadata?: Json | null
+          read?: boolean
+          title: string
+          title_ar?: string | null
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          action_required?: boolean
+          created_at?: string
+          id?: string
+          message?: string
+          message_ar?: string | null
+          metadata?: Json | null
+          read?: boolean
+          title?: string
+          title_ar?: string | null
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          created_at: string
+          customer_address: string
+          customer_name: string
+          customer_phone: string
+          estimated_delivery_time: string | null
+          id: string
+          items: Json
+          notes: string | null
+          payment_method: string | null
+          payment_status: string
+          status: string
+          total_amount: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          customer_address: string
+          customer_name: string
+          customer_phone: string
+          estimated_delivery_time?: string | null
+          id?: string
+          items: Json
+          notes?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          status?: string
+          total_amount: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          customer_address?: string
+          customer_name?: string
+          customer_phone?: string
+          estimated_delivery_time?: string | null
+          id?: string
+          items?: Json
+          notes?: string | null
+          payment_method?: string | null
+          payment_status?: string
+          status?: string
+          total_amount?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "orders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          address: string | null
+          avatar_url: string | null
+          created_at: string
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          email: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          avatar_url?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

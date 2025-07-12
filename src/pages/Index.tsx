@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Phone, MapPin, Clock, Utensils, Star, Heart } from "lucide-react";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { MenuCategory } from "@/components/MenuCategory";
 import { CartModal } from "@/components/CartModal";
 import { Button } from "@/components/ui/button";
@@ -64,7 +64,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gradient-bg">
-      <Header cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
+      <Header 
+        cartItems={cartItems} 
+        onRemoveFromCart={removeItem}
+        onUpdateQuantity={updateQuantity}
+      />
       
       {/* Hero Section */}
       <section className="relative bg-gradient-primary text-primary-foreground py-20">
