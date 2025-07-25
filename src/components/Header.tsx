@@ -120,7 +120,7 @@ const Header = ({ cartItems, onRemoveFromCart, onUpdateQuantity }: HeaderProps) 
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-gold" />
-                <span>الجزائر</span>
+                <span>2 Av. de Saint-Julien, 13012 Marseille</span>
               </div>
             </div>
 

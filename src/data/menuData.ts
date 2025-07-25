@@ -259,7 +259,7 @@ export const menuData: MenuCategory[] = [
       {
         id: "canette-33cl",
         name: "CANETTE 33cl",
-        description: "",
+        description: "Coca-Cola, Pepsi, Fanta, etc.",
         price: 2.00,
         category: "boissons"
       },
@@ -273,14 +273,7 @@ export const menuData: MenuCategory[] = [
       {
         id: "bouteille-1-5l",
         name: "BOUTEILLE 1.5L",
-        description: "",
-        price: 3.50,
-        category: "boissons"
-      },
-      {
-        id: "coca",
-        name: "Coca",
-        description: "",
+        description: "Coca-Cola, Pepsi, Fanta, etc.",
         price: 3.50,
         category: "boissons"
       }
