@@ -1,8 +1,8 @@
 import { MenuCard } from "./MenuCard";
-import { MenuCategory as MenuCategoryType, MenuItem } from "@/data/menuData";
+import { MenuCategory, MenuItem } from "@/pages/Index";
 
 interface MenuCategoryProps {
-  category: MenuCategoryType;
+  category: MenuCategory;
   onAddToCart: (item: MenuItem) => void;
 }
 

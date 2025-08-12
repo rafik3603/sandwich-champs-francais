@@ -6,14 +6,10 @@ import { Badge } from './ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu';
 import { CartModal } from './CartModal';
-import { MenuItem } from '@/data/menuData';
+import { CartItem } from "@/pages/Index";
 import NotificationSystem from './NotificationSystem';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
-
-interface CartItem extends MenuItem {
-  quantity: number;
-}
 
 interface HeaderProps {
   cartItems: CartItem[];
@@ -28,7 +24,7 @@ const Header = ({ cartItems, onRemoveFromCart, onUpdateQuantity }: HeaderProps) 
   const navigate = useNavigate();
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  const totalAmount = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const totalAmount = cartItems.reduce((sum, item) => sum + (item.final_price * item.quantity), 0);
 
   // Mock notifications data
   const mockNotifications = [

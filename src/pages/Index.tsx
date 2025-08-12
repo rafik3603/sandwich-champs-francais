@@ -1,56 +1,120 @@
-import { useState } from "react";
-import { Phone, MapPin, Clock, Utensils, Star, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Phone, MapPin, Clock, Utensils, Star, Heart, Loader2 } from "lucide-react";
 import Header from "@/components/Header";
-import { MenuCategory } from "@/components/MenuCategory";
+import { MenuCategory as MenuCategoryComponent } from "@/components/MenuCategory";
 import { CartModal } from "@/components/CartModal";
+import { CustomizeModal } from "@/components/CustomizeModal";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { menuData, MenuItem } from "@/data/menuData";
 import { useToast } from "@/hooks/use-toast";
+import { getMenuItems } from "@/lib/api";
 
-interface CartItem extends MenuItem {
+// Define types based on the new data structure from the API
+export interface Ingredient {
+  id: string;
+  name: string;
+  stock_level: number;
+}
+
+export interface Addon {
+  id: string;
+  name: string;
+  price: number;
+  stock_level: number;
+}
+
+export interface MenuItem {
+  id: string;
+  name: string;
+  description: string | null;
+  price: number;
+  category: string;
+  image_url: string | null;
+  isPopular?: boolean;
+  ingredients: Ingredient[];
+  addons: Addon[];
+}
+
+export interface MenuCategory {
+  id: string;
+  name: string;
+  items: MenuItem[];
+}
+
+export interface CartItem extends Omit<MenuItem, 'addons' | 'price'> {
+  cart_item_id: string; // Unique ID for this specific cart item instance
+  selected_addons: Addon[];
+  final_price: number;
   quantity: number;
 }
 
 const Index = () => {
+  const [menu, setMenu] = useState<MenuCategory[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCustomizeModalOpen, setIsCustomizeModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const { toast } = useToast();
 
-  const addToCart = (item: MenuItem) => {
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        setLoading(true);
+        const menuData = await getMenuItems();
+        setMenu(menuData);
+        setError(null);
+      } catch (err) {
+        setError("Failed to load the menu. Please try again later.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMenu();
+  }, []);
+
+  const handleOpenCustomizeModal = (item: MenuItem) => {
+    setSelectedItem(item);
+    setIsCustomizeModalOpen(true);
+  };
+
+  const handleAddToCart = (itemToAdd: Omit<CartItem, 'quantity'>) => {
     setCartItems(prev => {
-      const existingItem = prev.find(cartItem => cartItem.id === item.id);
+      const existingItem = prev.find(cartItem => cartItem.cart_item_id === itemToAdd.cart_item_id);
       if (existingItem) {
         return prev.map(cartItem =>
-          cartItem.id === item.id
+          cartItem.cart_item_id === itemToAdd.cart_item_id
             ? { ...cartItem, quantity: cartItem.quantity + 1 }
             : cartItem
         );
       }
-      return [...prev, { ...item, quantity: 1 }];
+      return [...prev, { ...itemToAdd, quantity: 1 }];
     });
     
     toast({
       title: "Article ajouté au panier",
-      description: `${item.name} a été ajouté à votre panier.`,
+      description: `${itemToAdd.name} a été ajouté à votre panier.`,
     });
   };
 
-  const updateQuantity = (itemId: string, quantity: number) => {
+  const updateQuantity = (cartItemId: string, quantity: number) => {
     if (quantity <= 0) {
-      removeItem(itemId);
+      removeItem(cartItemId);
       return;
     }
     setCartItems(prev =>
       prev.map(item =>
-        item.id === itemId ? { ...item, quantity } : item
+        item.cart_item_id === cartItemId ? { ...item, quantity } : item
       )
     );
   };
 
-  const removeItem = (itemId: string) => {
-    setCartItems(prev => prev.filter(item => item.id !== itemId));
+  const removeItem = (cartItemId: string) => {
+    setCartItems(prev => prev.filter(item => item.cart_item_id !== cartItemId));
   };
 
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -151,11 +215,23 @@ const Index = () => {
             </p>
           </div>
           
-          {menuData.map((category) => (
-            <MenuCategory
+          {loading && (
+            <div className="flex justify-center items-center py-16">
+              <Loader2 className="w-12 h-12 animate-spin text-gold" />
+            </div>
+          )}
+
+          {error && (
+            <div className="text-center py-16 text-red-500">
+              <p>{error}</p>
+            </div>
+          )}
+
+          {!loading && !error && menu.map((category) => (
+            <MenuCategoryComponent
               key={category.id}
               category={category}
-              onAddToCart={addToCart}
+              onAddToCart={handleOpenCustomizeModal}
             />
           ))}
         </div>
@@ -224,6 +300,14 @@ const Index = () => {
         onUpdateQuantity={updateQuantity}
         onRemoveItem={removeItem}
         onCheckout={handleCheckout}
+      />
+
+      {/* Customize Modal */}
+      <CustomizeModal
+        isOpen={isCustomizeModalOpen}
+        onClose={() => setIsCustomizeModalOpen(false)}
+        item={selectedItem}
+        onAddToCart={handleAddToCart}
       />
     </div>
   );

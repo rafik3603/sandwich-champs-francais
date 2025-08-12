@@ -2,7 +2,7 @@ import { Plus, Star } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MenuItem } from "@/data/menuData";
+import { MenuItem } from "@/pages/Index";
 
 interface MenuCardProps {
   item: MenuItem;
@@ -13,10 +13,10 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
   return (
     <Card className="bg-card border-border hover:shadow-card transition-smooth group overflow-hidden">
       <CardContent className="p-0">
-        {item.image && (
+        {item.image_url && (
           <div className="relative h-48 w-full overflow-hidden">
             <img 
-              src={item.image} 
+              src={item.image_url}
               alt={item.name}
               className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             />
@@ -34,7 +34,7 @@ export const MenuCard = ({ item, onAddToCart }: MenuCardProps) => {
             <div className="flex-1">
               <div className="flex items-center space-x-2 mb-2">
                 <h3 className="font-semibold text-card-foreground text-lg">{item.name}</h3>
-                {item.isPopular && !item.image && (
+                {item.isPopular && !item.image_url && (
                   <Badge className="bg-gold text-primary text-xs">
                     <Star className="w-3 h-3 mr-1" />
                     Populaire

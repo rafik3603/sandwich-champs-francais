@@ -2,18 +2,14 @@ import { X, Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MenuItem } from "@/data/menuData";
-
-interface CartItem extends MenuItem {
-  quantity: number;
-}
+import { CartItem } from "@/pages/Index";
 
 interface CartModalProps {
   isOpen: boolean;
   onClose: () => void;
   cartItems: CartItem[];
-  onUpdateQuantity: (itemId: string, quantity: number) => void;
-  onRemoveItem: (itemId: string) => void;
+  onUpdateQuantity: (cartItemId: string, quantity: number) => void;
+  onRemoveItem: (cartItemId: string) => void;
   onCheckout: () => void;
 }
 
@@ -27,7 +23,7 @@ export const CartModal = ({
 }: CartModalProps) => {
   if (!isOpen) return null;
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = cartItems.reduce((sum, item) => sum + item.final_price * item.quantity, 0);
   const itemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -64,20 +60,22 @@ export const CartModal = ({
             ) : (
               <div className="space-y-4 p-6">
                 {cartItems.map((item) => (
-                  <div key={item.id} className="flex items-center space-x-4 p-4 bg-muted/30 rounded-lg">
+                  <div key={item.cart_item_id} className="flex items-center space-x-4 p-4 bg-muted/30 rounded-lg">
                     <div className="flex-1">
                       <h4 className="font-semibold text-card-foreground">{item.name}</h4>
-                      {item.description && (
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                      {item.selected_addons.length > 0 && (
+                        <p className="text-sm text-muted-foreground">
+                          + {item.selected_addons.map(a => a.name).join(', ')}
+                        </p>
                       )}
-                      <p className="text-gold font-bold">{item.price.toFixed(2)}€</p>
+                      <p className="text-gold font-bold mt-1">{item.final_price.toFixed(2)}€</p>
                     </div>
                     
                     <div className="flex items-center space-x-2">
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => onUpdateQuantity(item.cart_item_id, item.quantity - 1)}
                         disabled={item.quantity <= 1}
                       >
                         <Minus className="w-4 h-4" />
@@ -86,14 +84,14 @@ export const CartModal = ({
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => onUpdateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => onUpdateQuantity(item.cart_item_id, item.quantity + 1)}
                       >
                         <Plus className="w-4 h-4" />
                       </Button>
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => onRemoveItem(item.id)}
+                        onClick={() => onRemoveItem(item.cart_item_id)}
                         className="ml-2"
                       >
                         <X className="w-4 h-4" />
